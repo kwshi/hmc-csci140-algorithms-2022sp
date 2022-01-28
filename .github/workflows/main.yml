@@ -1,0 +1,16 @@
+name: "build-and-release"
+on: "push"
+jobs:
+  main:
+    runs-on: "ubuntu-latest"
+    steps:
+      - name: "checkout"
+        uses: "actions/checkout@v2"
+      - name: "build-and-release"
+        uses: "kwshi/action-latexmk-release@main"
+        with:
+          token: "${{ secrets.GITHUB_TOKEN }}"
+          engine: "lualatex"
+          out: "_build"
+          paths: |
+            01/01.tex
