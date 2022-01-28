@@ -1,0 +1,246 @@
+\documentclass{ks-pset}
+
+\usepackage{ks-cs}
+
+\title{Homework 1}
+\author{Kye Shi}
+\date{2022 January 27}
+
+\begin{document}
+
+\begin{itemize}
+  \item Please read \emph{Handout 1:  Good Writing, Induction, Extremality, and
+    Greed} before embarking on this assignment.  It's a review of important
+    concepts and techniques that you'll use on this assignment.  It also
+    explains class expectations on writing style.
+
+  \item Each problem must be typeset using \LaTeX.  You're welcome to start
+    with the \LaTeX{} source files posted on Piazza and modify them.
+
+  \item At the end of each problem, please include a brief self-assessment.  If
+    you know that your solution is not quite complete or correct, let us know
+    that you recognize that and where you believe that the issue arises.  If
+    you're confident in your solution, let us know that as well! Generally,
+    just one sentence suffices here.  Part of your score will be based on an
+    accurate self-assessment of your work.
+
+  \item After Tuesday's class (January 21), you're ready to do Problems 1, 2,
+    and 4.  Starting early on these problem sets (or at least thinking about how
+    to solve them) is a great idea for this class! Problem 3 is based on
+    material in Thursday's class.
+
+  \item Most problem sets (including this one) have an optional bonus problem.
+    While the required problems are intended to develop \emph{proficiency} with
+    the material, the optional problems will help you achieve deeper
+    \emph{mastery} of the material.
+
+  The required problems are worth a total of 100 points and that's all that's
+  required for a perfect score.  However, it's possible to get more than 100
+  points by submitting a correct solution to the bonus mastery problem and
+  those points can positively impact your course grade.
+\end{itemize}
+
+\newpage
+
+\begin{problem}[Positively Beaming, 20]
+  You are the manager of a research facility that provides high-powered X-ray
+  beam access for researchers interested in using these beams for their
+  experiments.  Research groups reserve time slots with the facility months in
+  advance lasting one or more days, with many research groups present at the
+  facility at any one time.  We will say $n$ groups are signed up for beam time
+  over the next $D$ days, with group $i$ choosing start date $s_i$ and end date
+  $e_i$ for their beam reservation.
+
+  As manager, most days you work from an office an hour drive away from the
+  main facility.  However, you like to go by the facility to meet each research
+  group for at least a few minutes to hear about their project and how it's
+  progressing.  If you do this, you spend the whole day at the main facility
+  instead of your office, which is more than enough time to meet all the groups
+  present that day.
+
+  Given a fixed schedule for the start and end dates of each group's visit,
+  your goal is to \emph{minimize the number of days} you need to be present at
+  the beam in order to meet all of the research groups.  (That is, you want to
+  find the smallest set of possible days to visit the facility such that you
+  will overlap with each of the $n$ groups working at the facility.)
+
+  \begin{subproblems}
+    \item Describe a greedy algorithm that, given the start dates $s_i$ and end
+      dates $e_i$ for each of the $n$ groups scheduled, determines a smallest
+      set of dates in the range 1 to $D$ such that you can meet all the groups.
+      Don't worry about giving big-O running time.  \emph{Your algorithm
+        description requires just  a few sentences of clear English.  That's
+        sufficient!  If you wish to also include some high-level pseudo-code,
+      that's fine, but not necessary.}
+    \item Prove the correctness of your algorithm using mathematical induction
+      and the safe choice method.
+  \end{subproblems}
+\end{problem}
+
+\begin{solution}
+\end{solution}
+
+\begin{problem}[Focus Problem: Making Change Revisited, 50]%
+  The Republic of Shmorbodia\footnote{The Republic of Shmorbodia is an official
+  sponsor of this course.} uses coin denominations that are Fibonacci numbers.
+  Recall that the Fibonacci numbers are defined as follows:  $F_0 = 0$, $F_1 =
+  1$, and $F_n = F_{n-1} + F_{n-2}$ for $n ≥ 2$.  The Shmorbodian currency
+  system comprises coins $F_2, \dotsc, F_k$ for some fixed constant $k$.  (Note
+  that we start with $F_2$ rather than $F_1$ since $F_1 = F_2 = 1$.)  That is,
+  the coin values are consecutive Fibonacci numbers up to some Fibonacci number
+  $F_k$.  In this problem, you'll show that the greedy algorithm for making
+  change (i.e., use one coin of the largest denomination possible, reduce the
+  balance by that amount, and repeat until the balance is zero), is optimal in
+  the sense that it uses the least possible number of coins.
+
+  As usual in proving the optimality of greedy algorithms, you should use the
+  safe choice method.  Recall that when we proved the optimality of the
+  algorithm for a ``geometric'' denomination system $b^0, b^1, \dots, b^k$ for
+  integers $b > 1$ and $k ≥ 0$, we needed to make some observations about what
+  an optimal solution could look like (i.e., an optimal solution has at most
+  $b-1$ coins of type $b^{\ell}$ for any $\ell < k$) and we derived an identity
+  that allowed us to show that the greedy choice is part of an optimal solution
+  ($b^0 + b^1 + \dots + b^i = \frac{b^{i+1}-1}{b-1}$).  You'll use an analogous
+  approach here.
+
+  First, recall that in a geometric denomination system, we showed that the
+  greedy choice is part of \emph{every} optimal solution.  That is, we
+  \emph{must} make that greedy choice to get an optimal solution.  That's a
+  stronger result than we actually needed.  It would suffice to just argue that
+  \emph{there exists} some optimal solution that uses the greedy choice.  In a
+  Fibonacci denomination system, there can exist multiple equally optimal
+  solutions, including some that do not make the greedy choice.  For example,
+  consider the Fibonacci system with coin values of $1, 2, 3$.  If we wish to
+  make $4$ cents of change, we can do that with two coins as $3$ and $1$ (this
+  is the result of making the greedy choice) or, alternatively, as $2$ and $2$.
+  So, note that we are \emph{not} claiming here that the greedy algorithm is
+  the only way to get an optimal solution.  Rather, we're claiming that the
+  greedy algorithm is guaranteed to give an optimal solution.
+
+  \begin{subproblems}
+
+    \item First, you'll need to make some observations about what an optimal
+      solution looks like.  Assume that our coins are $F_2, F_3, \dots, F_k$.
+
+      \begin{subproblems}
+        \item Prove that no optimal solution uses two consecutive coin types
+          $F_{i}$ and $F_{i+1}$ for $i+1 < k$.
+
+        \item Prove that $2F_{i} = F_{i+1} + F_{i-2}$, for $i ≥ 2$.  (No need
+          for induction here, you can just use the definition of Fibonacci
+          numbers and a tiny bit of algebra.)
+
+        \item \label{part:safe} Prove that there exists an optimal solution
+          that does not use two or more coins with value $F_i$ where $i < k$.
+          In other words, although we may need to use multiple coins of highest
+          denomination, $F_k$, there exists an optimal solution that uses at
+          most one coin of each lower denomination.  (An extremality argument
+          will be useful here.  In particular, you may wish to consider the set
+          of optimal solutions that use the largest number of $F_k$ coins.  In
+          that set of optimal solutions, consider the subset that uses the
+          largest number of $F_{k-1}$ coins.  Now, consider the subset of that
+          subset that uses the largest number of $F_{k-2}$ coins, etc.  In this
+          way, you'll choose not \emph{any old} optimal solution but rather a
+          particular ``extremal'' one.
+
+          That will allow you to show that there must exist \emph{some} optimal
+          solution that does not use two or more coins with value $F_i$ where $i <
+          k$.)
+      \end{subproblems}
+
+    \item \label{part:ident} Next, we'll need some identities that we'll use in
+      our proof.
+      \begin{subproblems}
+        \item Prove by induction (or strong induction) that for all $i ≥ 0$,
+          $F_0 + F_2 + F_4 + \dots + F_{2i} = F_{2i+1} - 1$ (cite this as
+          ``Identity 1'')
+        \item Prove by induction (or strong induction) that for all $i ≥ 1$,
+          $F_1+ F_3 + F_5 + \dots + F_{2i-1} = F_{2i}$ (cite this as ``Identity
+          2'')
+      \end{subproblems}
+    \item Finally, use the safe choice method  to prove that the greedy
+      algorithm always gives an optimal solution for a Fibonacci denomination
+      system with coin values $F_2, F_3, \dots, F_k$ for any fixed constant $k
+      ≥ 2$.  (Remember that this is a proof by strong induction.  Just as in
+      the proof that we used for the change problem in class, this will be
+      strong induction on the amount of money $n$ for which we want to make
+      change.  The result from \cref{part:safe} and the identities in
+      \cref{part:ident} will be useful.)
+  \end{subproblems}
+
+\end{problem}
+
+\begin{solution}
+\end{solution}
+
+
+
+\begin{problem}[Tree Stumpers, 30]
+
+  After learning about Prim's and Kruskal's algorithms, your friends have been
+  pining for some alternative algorithms for finding minimum spanning trees, so
+  they've gone out on a limb and proposed some new algorithms.  (No more tree puns
+  from this point onwards!)  After unsuccessfully leafing through algorithms
+  textbooks to determine if their algorithms are correct, they are stumped!  So,
+  they've decided to branch out and enlist your help determining which of these
+  algorithms work.
+
+  For each of the two algorithms below, either prove the correctness of the
+  algorithm, or give a specific (small) graph as a counterexample.  If you give
+  a counterexample, make sure to explain why it is a counterexample, i.e., how
+  the algorithm's tree would differ from the optimal tree.  \textbf{You should
+    assume that the graph $G = (V, E, w_e)$ has distinct edge weights $w_e$ for
+  each edge $e \in E$.}
+
+  \begin{subproblems}
+    \item One friend, May B.~So, suggests the following recursive algorithm
+      \(\Ident{MayBTree}(G)\): If $G$ only has one vertex, return an empty
+      tree. Otherwise, arbitrarily split the graph in half, creating two
+      subgraphs $Y$ and $Z$ of $G$ that each contains roughly half the vertices
+      in $V$. Recursively call this function for each graph to get one tree for
+      each, $S = \Ident{MayBTree}(Y)$ and $T = \Ident{MayBTree}(Z)$.  Then,
+      find the lowest-cost edge $e$ in the original graph such that one
+      endpoint is in $Y$ and the other is in $Z$.  Return $S + T + \{e\}$.
+
+    \item Another friend, Quincy Vablie, suggests the following algorithm: Like
+      Kruskal's algorithm, each vertex starts in its own component.  Start with
+      an empty set of edges $T = \{\}$.  The algorithm proceeds in rounds: At
+      each round, each connected component (in an arbitrary order) identifies
+      the edge of least weight that has one endpoint in that component and one
+      endpoint in a different component.  (We call this a ``least weight
+      outgoing edge,'' and note that two components may have the same least
+      weight outgoing edge!) Once each component has identified its least
+      weight outgoing edge, all of those edges are added to $T$, resulting in a
+      new set of connected components.  This process is repeated in rounds
+      until there is only one connected component remaining.  At that point,
+      the set $T$ is returned.
+  \end{subproblems}
+
+\end{problem}
+
+\begin{solution}
+\end{solution}
+
+\begin{problem}[Optional Bonus Problem: The Arithmetic and Geometric Mean, 20]
+
+  Let $x_{1}, \dotsc, x_{n}$ be positive real numbers.  The \emph{arithmetic
+    mean} of these numbers is defined to be $\frac{x_{1} + x_{2} + \dotsb +
+  x_{n}}{\ n}$ and the \emph{geometric mean} is defined to be $(x_{1}x_{2}
+  \dotsm x_{n})^{1/n}$.  In this problem we show that the arithmetic mean of
+  $n$ numbers is at least as large as the geometric mean of those numbers.
+  \begin{subproblems}
+    \item Use induction to show that if $x_{1} x_{2} \dotsm x_{n} = 1$ then
+      $x_{1} + x_{2} + \dotsb + x_{n} ≥ n$.  (Beware of the induction pitfall
+      mentioned in the handout on writing inductive proofs.)
+
+    \item Use this fact to show that the arithmetic mean is at least
+      as large as the geometric mean.  (No induction required here; just
+      a little algebra.)
+  \end{subproblems}
+
+\end{problem}
+
+\begin{solution}
+\end{solution}
+
+\end{document}
