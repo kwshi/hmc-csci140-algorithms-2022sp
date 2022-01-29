@@ -17,5 +17,6 @@ jobs:
           engine: "lualatex"
           out: "_build"
           texinputs: ".ks-latex"
+          shell: true
           paths: |
             01/01.tex
