@@ -12,5 +12,6 @@ jobs:
           token: "${{ secrets.GITHUB_TOKEN }}"
           engine: "lualatex"
           out: "_build"
+          texinputs: ".ks-latex"
           paths: |
             01/01.tex
