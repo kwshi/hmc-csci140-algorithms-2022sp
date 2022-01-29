@@ -8,8 +8,6 @@ jobs:
         uses: "actions/checkout@v2"
         with:
           submodules: true
-      - name: "test"
-        run: "ls -R"
       - name: "build-and-release"
         uses: "kwshi/action-latexmk-release@main"
         with:
