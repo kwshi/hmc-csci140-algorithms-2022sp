@@ -1,0 +1,3 @@
+[submodule ".ks-latex"]
+	path = .ks-latex
+	url = https://github.com/kwshi/ks-latex
