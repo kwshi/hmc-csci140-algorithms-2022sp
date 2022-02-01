@@ -17,4 +17,4 @@ jobs:
           texinputs: ".ks-latex"
           shell: true
           paths: |
-            01/01.tex
+            */*.tex
