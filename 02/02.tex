@@ -1,0 +1,139 @@
+\documentclass{ks-pset}
+
+\usepackage{ks-cs}
+
+\title{Homework 2}
+\author{}
+\date{2022 February 9 (Wednesday)}
+
+\begin{document}
+
+\begin{itemize}
+  \item Please read \emph{Handout 2:  Dynamic Programming} before embarking on
+    this assignment.  It's a good guide of how to write a complete dynamic
+    programming proof!
+  \item At the end of each problem, please include a brief self-assessment. If
+    you know that your solution is not quite complete or correct, let us know
+    that you recognize that and where you believe that the issue arises. If
+    you're confident in your solution, let us know that as well! Generally,
+    just one sentence suffices here. Part of your score will be based on an
+    accurate self-assessment of your work.
+  \item Make sure to list all of your collaborators on this assignment at the
+    top.
+\end{itemize}
+
+\newpage
+
+\begin{problem}[Sho'nuffian Palindromes! -- 40]
+
+  The Sho'nuffian Security Agency embeds secret messages as palindrome
+  subsequences of longer strings.  For example, the string
+
+  \mintinline{text}{babbzmqanatplanxzatcanazlxpanamxazz}
+
+  contains inside it the palindrome \mintinline{text}{amanaplanacanalpanama} as
+  seen below:
+
+  \inputminted{text}{palindrome.txt}
+
+  Your job is to describe and analyze an efficient dynamic programming
+  algorithm for finding the longest palindromic subsequence in a given string
+  \(S\) of length \(n\). To that end, follow the steps outlined in Handout 2, which
+  begins by describing a recursive solution and culminates in the DP solution
+  and its analysis, with various intermediate steps along the way. At first,
+  just describe how to find the length of the longest palindrome and, at the
+  very end, describe the extra part using ``breadcrumbs'' to reconstruct an
+  actual solution. Make sure to include the proof of correctness of the
+  recursive algorithm and the big-O running time!
+
+  \begin{note}
+    Like in class, when you index into a string, we'll ask you to write out
+    relevant indices within the larger string, e.g. \(S[1 \dotso i]\) could
+    represent the first \(i\) characters of a string, or 0 characters if \(i =
+    0\). You should be specific and consistent with these indices in your
+    recursive function and your DP table; in addition, these indices may help
+    you express what you're inducting over for your proof!
+  \end{note}
+
+  \begin{note}
+    A tempting approach to this problem is to find the longest common
+    subsequence (LCS) of the string and its reversal.  This doesn't always
+    work.  For example, given the string ``ABCAB," one longest common
+    subsequence of the string and its reversal is the string ``ACB'' which is
+    not a palindrome.  You should, therefore, describe a new recursive
+    algorithm that does not use LCS.
+  \end{note}
+
+\end{problem}
+
+\begin{solution}
+  \paragraph{Self-assessment}
+\end{solution}
+
+\begin{problem}[Smart Lumber -- 40]
+
+  At the Unseen University (a well-known wizarding university on the
+  Discworld), several keen explorer-wizards recently reported back with an
+  astounding discovery: they have located a large forest of \emph{sapient
+  pearwood}, an astonishingly rare material of immense value for constructing
+  high-quality sentient furniture. Since the discovery, the wizards have begun
+  their own enterprise selling ``smart lumber'' called Pearwood Industries
+  (PI). Being somewhat new to the lumber business, and knowing your algorithmic
+  wizardry, they come to you with a problem.
+
+  Given an \(m×n\) cross-section of lumber (\(m\) and \(n\) are integers and
+  the units are in centimeters), PI would like to cut the piece of lumber into
+  some number of smaller pieces for sale.  Each section will be a rectangle
+  with integer dimensions.  The value for any \(k×ℓ\) piece can be looked up in
+  constant time, though the value is not necessarily related to the area of the
+  piece, as some dimensions are simply in higher demand.  For example, a
+  \(3×4\) piece might be worth \$42 (in Ankh-Morporkian dollars) while a
+  \(6×6\) piece might be worth \$8.   
+
+  Your wizarding friends have constructed a special saw that is capable of
+  making a cut -- horizontally or vertically -- across any rectangular section
+  of sapient pearwood.  (Note that a cut is made across the entire section of
+  the given piece; no partial cuts are possible.) Once you have fully cut a
+  piece of wood, you may then cut each of those two resulting pieces into
+  further pieces independently.
+
+  \textbf{Describe and analyze an efficient dynamic programming algorithm for
+    determining how to subdivide a given \(m×n\) piece to maximize the total
+  value of the resulting pieces.}  Use the process and writing style from
+  Handout 2.  For simplicity of exposition, you should describe an algorithm
+  that returns a number which is the maximum possible revenue.   No proof of
+  correctness is required, but you should bound the big-O running time. At the
+  very end,  in just a few additional sentences, explain how you would modify
+  your algorithm to return the actual sequence of cuts that result in the
+  pieces that make up this optimal revenue. \emph{You don't need to analyze the
+  big-O running time of reconstructing the cut sequence.}
+
+\end{problem}
+
+\begin{solution}
+  \paragraph{Self-assessment}
+\end{solution}
+
+\begin{problem}[The Arithmetic and Geometric Mean -- 20]
+
+  Let \(x_{1}, \dotsc, x_{n}\) be positive real numbers.  The \emph{arithmetic
+  mean} of these numbers is defined to be \(\frac{x_1+x_2+\dotsb+x_n}{n}\) and
+  the \emph{geometric mean} is defined to be \((x_1 x_2 \dotsm x_n)^{1/n}\). In
+  this problem we show that the arithmetic mean of \(n\) numbers is at least as
+  large as the geometric mean of those numbers.
+  \begin{subproblems}
+    \item Use induction to show that if \(x_1 x_2 \dotsm x_n=1\) then
+      \(x_1+x_2+\dotsb+x_n≥n\).  (Beware of the induction pitfall mentioned in
+      the handout on writing inductive proofs.)
+    \item Use this fact to show that the arithmetic mean is at least as large
+      as the geometric mean.  (No induction required here; just a little
+      algebra.)
+  \end{subproblems}
+
+\end{problem}
+
+\begin{solution}
+  \paragraph{Self-assessment}
+\end{solution}
+
+\end{document}
