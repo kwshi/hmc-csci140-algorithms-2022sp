@@ -1,0 +1,207 @@
+\documentclass{ks-pset}
+
+\usepackage{ks-cs}
+
+\title{Homework 3: Dynamic Programming II}
+\author{}
+\date{2022 February 16 (Wednesday)}
+
+\begin{document}
+
+\begin{problem}[Making Change Revisited, 40]
+
+  In class and on Homework 1, we explored the problem of making change using
+  the minimum number of coins.  We saw two types of denomination systems
+  (geometric and Fibonacci) where the greedy algorithm is guaranteed to produce
+  an optimal solution.  But, the greedy algorithm doesn't produce optimal
+  solutions for all denomination systems.  For example, if the denomination
+  system in Sho'nuff has coins of values \(1, 7, 8\) and we wish to make change
+  for \(14\), the greedy algorithm will use one coin of value \(8\) and six
+  coins of value \(1\), for total of seven coins.  However, giving two coins of
+  value \(7\) is optimal.
+
+  In this problem, you'll design a dynamic programming algorithm for the
+  general case of any set of coin denominations, assuming that a coin of value
+  \(1\) (a ``penny'') is always part of the denomination system.  Assume that
+  you're given a list of coin types \(C\) sorted from smallest to largest
+  value, so that \(C[0] = 1\).  Let \(n\) denote the number of coin types in
+  the system, so that the largest index in the coin array is \(n-1\).  You are
+  also given a non-negative integer \Ident{amount} indicating the amount of
+  money that you need to make up from those coins.
+
+  \begin{itemize}
+
+    \item First, give pseudo-code (you can use your own conventions for
+      pseudo-code as long as it's clear) for solving the problem recursively.
+      We've provided a verbatim environment below for you to fill in the
+      pseudo-code.  Be sure to put the input arguments in the signature and
+      explain what they mean in the docstring.  For the recursive function,
+      please expose the indices in the signature as discussed in class on
+      Thursday.  For example, for the RNA folding problem, we wrote a
+      pseudo-code signature \(\Ident{fold}(i, j)\) or
+      \(\Ident{fold}(\Ident{RNA}[i\dotso j])\) and wrote in the docstring
+      \texttt{Returns the optimal fold score for the substring of the RNA from
+      index \(i\) to index \(j\) inclusive}.  This helps the reader understand
+      your plan and will ultimately help you construct the corresponding DP.
+      For the recursive change function, the arguments might be \(i\) and
+      \Ident{amount} and the docstring would read \texttt{Returns the minimum
+        number of coins required to make amount using only coins from \(C[1]\)
+      through \(C[i]\) inclusive.} Or, the function might take two index
+      arguments \(i\) and \(j\) and the docstring would read \texttt{Returns
+        the minimum number of coins required to make amount using only coins
+      from \(C[i]\) through \(C[j]\) inclusive.}  In general, fewer arguments
+      will result in a lower-dimensional DP table which saves memory. So,
+      when possible, try to keep the number of arguments small.
+
+      The last argument will be  \texttt{amount}.
+
+      \begin{aside}
+        \inputminted{python}{template/recursive_change.py}
+      \end{aside}
+
+    \item Next, give pseudo-code for the dynamic programming solution.
+
+      \begin{aside}
+        \inputminted{python}{template/changeDP.py}
+      \end{aside}
+
+    \item Finally, in just a few sentences, give the big-O running time of your
+      DP as a function of \(n\) and \texttt{amount}.
+
+  \end{itemize}
+
+\end{problem}
+
+\begin{solution}
+
+\end{solution}
+
+\begin{problem}[Typesetting with Sho\TeX!, 60]
+
+  This is an implementation problem using Python 3.  Researchers at the
+  Sho'nuffian Institute of Technology (S.I.T.) are developing a new typesetting
+  system called Sho\TeX.  One of Sho\TeX's features is that it formats input so
+  that the text is  left-justified (all lines begin at the same left column)
+  and the right margin is as ``even'' as possible. Moreover, Sho\TeX\ can
+  format text for any column width (so that it fits on mobile device screens,
+  computer screens, and other displays).  For example, consider the following
+  text in an input file called \verb+mobydickExcerpt.txt+.
+
+  \begin{aside}
+    \inputminted{text}{./template/mobydickExcerpt.txt}
+  \end{aside}
+
+  Now, we run the \(\Ident{format}(\Ident{filename}, \Ident{columns}, k,
+  \Ident{display})\) function (which you will write) to format this text. This
+  function takes as input (1) the name of the input text file, (2) a positive
+  integer indicating the number of columns in the output, (3) a penalty value
+  \(k\) explained below, and (4) a Boolean \Ident{display} which determines
+  whether or not to show the layout of the words in the solution. The program
+  optimally formats the text to pack it into the given number of columns and it
+  returns a single numerical value, which is the optimal total penalty.  The
+  definition of optimality is explained below.
+
+  \begin{aside}
+    \mintinline{python}{>>> format("mobydickExcerpt.txt", 40, 3, True)}
+    \tcblower
+    \inputminted{text}{template/mobydick-example.txt}
+    \mintinline{python}{259} \quad\textleftarrow{} This value was returned
+  \end{aside}
+
+  Here's where we do it with the display variable set to \verb+False+.
+
+  \begin{aside}
+    \mintinline{python}{>>> format("mobydickExcerpt.txt", 40, 3, True)}
+    \tcblower
+    \mintinline{python}{259}
+  \end{aside}
+
+  Here are the details:
+
+  \begin{itemize}
+    \item The text is assumed to be fixed-width font (so that every symbol has
+      the same width).  Most likely your programming environment will
+      automatically use a fixed-width font.  If not, you may need to set it to
+      fixed-width.
+    \item You should strip out \emph{all} white space, leaving only words. Some
+      words will end with a punctuation symbol and that symbol simply is
+      considered a letter that is part of the word that it's attached to. The
+      word packing should pack words in sequence with exactly one space between
+      each word.  (There is no special exception for more space after
+      punctuation, since punctuation symbols are just considered characters in
+      the words that contain them.)  Blank lines and all other extra white
+      space will be removed!  Python's \Ident{split} method for strings makes
+      this very easy.  (You can read more about it online.)
+    \item The output text on each column may never exceed the specified column
+      width.  (You should assume that the column width will always be at least
+      as large as the length of the longest word in the input file. If the user
+      provides a column width that is smaller than the length of some string in
+      the file, your program may report an error message, behave badly, or
+      crash.)
+    \item The penalty function is of the form \(n^k\) where the user specifies
+      the value of \(k\).  The penalty of a word packing is computed as
+      follows: For every line in the output that contains text, compute the
+      amount of slack on that line as the difference between the column width
+      (40 in our example above) and the length of the text on that line.  Note
+      that spaces between words contribute to the length of the line, but all
+      spaces after the last word are counted as slack. Apply the penalty
+      function to that slack.  This is called the \emph{line penalty}.  Add up
+      all of the line penalties to get the total penalty.  In the example
+      above, we used a penalty of \(n^3\) and the slacks on each of the six
+      lines are 2, 2, 4, 3, 5, and 3 for a total penalty of
+      \(2^3+2^3+4^3+3^3+5^3+3^3=259\).
+    \item The \Ident{format} function should find a formatting that minimizes
+      the penalty for the given text, column width, and penalty function. If
+      the \Ident{display} variable is \Ident{True} it should \Ident{print} the
+      formatted text (using the \Ident{print} function).  The function should
+      always \mintinline{python}{return} a single number: the optimal total
+      penalty.
+    \item In some cases, there are multiple equally good solutions.  They will
+      all have the same penalty, but may pack the words slightly differently.
+      That's OK!
+    \item Please test your code using our autotester for this problem. That
+      autotester will provide part of your score for this problem, so you
+      should be certain that the tests pass.
+  \end{itemize}
+
+  Your task is to write the \Ident{format} function in Python 3.  You will be
+  provided the starter file \verb+format.py+.  Please add your code to that
+  file. You should turn in a zip file that contains the following:
+  \begin{enumerate}
+    \item A text file \verb+mytest.txt+ that contains a test input that you
+      constructed to test your code.  (Developing tests is a key skill for all
+      computer scientists!)  You should develop this test input so that when
+      you run your \Ident{format} DP with a particular number of columns and
+      exponent \(k\) of your choosing, you know in advance what the optimal
+      solution should be.  This will require that you think carefully about
+      designing that text and the column width that you wish to use for testing
+      your code.
+    \item A copy of the provided \verb+tester.py+ file with one additional
+      \mintinline{python}{assert} statement that tests on your
+      \verb+mytest.txt+ file with some column width and exponent argument \(k\)
+      of your choosing. Then, underneath that \mintinline{python}{assert}
+      statement, add a Python comment that explains how you determined that the
+      solution is correct; that is, how you designed the text and column width
+      and exponent value \(k\) to know what the correct solution should be.
+    \item A \verb+pdf+ document that contains the description of the recursive
+      algorithm, the resulting DP, and a derivation of the running time of the
+      DP. The running time may be a polynomial in the number of words, the
+      total length of the words, and/or the number of columns in the formatted
+      output.
+    \item The \verb+format.py+ file  that contains your Python code added to
+      our starter file.  Please include at least a few explanatory comments as
+      a matter of good style.
+  \end{enumerate}
+
+  \begin{hint}
+    The last word can go on a new line or not. The last two words can go on a
+    new line or not. The last three words…
+  \end{hint}
+
+\end{problem}
+
+\begin{solution}
+
+\end{solution}
+
+\end{document}
