@@ -5,3 +5,6 @@
 *.synctex.gz
 _build/
 _minted-*/
+
+__pycache__/
+.hypothesis/
