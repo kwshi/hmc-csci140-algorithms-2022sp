@@ -1,0 +1,363 @@
+\documentclass{ks-pset}
+
+\usepackage{ks-cs}
+
+\title{Homework 6: Amortization and Graphs!}
+
+\begin{document}
+
+\begin{itemize}
+
+  \item Please read \emph{Handout: Amortized Analysis} before embarking on this
+    assignment.
+
+  \item If a problem asks you to use the accounting method, you need to first
+    list the number of rubles charged for each operation. Next, describe how
+    these rubles will be used in each operation, including where rubles will be
+    stored on or taken from the data structure. (Remember that every constant
+    set of work needs at least one ruble to pay for it!) Then, prove that this
+    rubling scheme will work to pay for work by giving an invariant that
+    ensures enough rubles will exist in the data structure at any time to help
+    pay for all work, then showing that if it holds before each operation, it
+    will still hold after. Wrap up by computing the new upper bound of the
+    running time of \(n\) operations as \(n\) times the highest ruble charge
+    for an operation.
+
+  \item If a problem asks you to use the potential method, you should first
+    state the potential function \(Φ\) you intend to use. (It may be helpful to
+    name quantities from the data structure that you intend to use in your
+    potential function.) Then, prove your potential function is valid, i.e.,
+    that it starts out at zero and will always remain non-negative. Finally,
+    describe the new amortized cost of each operation by summing the original
+    operation running time and \(ΔΦ\) for that operation. Wrap up by computing
+    the new upper bound of the running time of \(n\) operations as \(n\) times
+    the highest new amortized cost of an operation.
+
+  \item In either argument, it may make sense to split into different ``cases''
+    for what a particular operation does (as we did in class with extendible
+    arrays, where only sometimes a copy operation would need to happen). This
+    is okay, as long as you make sure to consider each possible case.
+
+\end{itemize}
+
+\newpage
+
+\begin{problem}[Minqueues!, 35]
+
+  A Minqueue is an abstract data type (sometimes called an ADT) that supports
+  the following operations:
+
+  \begin{description}[nosep]
+    \item[\(\Ident{enqueue}(x)\)] Inserts the number \(x\) into the Minqueue.
+    \item[\(\Ident{dequeue}()\)] Removes the element that has been in the
+      Minqueue for the longest time.
+    \item[\(\Ident{find_min}()\)] Returns the smallest value in the Minqueue
+      but \emph{does NOT} remove it from the Minqueue.
+  \end{description}
+
+  Your officemate at Millisoft, Dr.~Anna Litik, has proposed a clever data
+  structure for this problem which she calls ``Real Queue and Helper Queue.''
+  Here's how it works:  When an element is enqueued, it is placed into a
+  regular queue (implemented as a doubly linked list).  However, it is
+  \emph{also} placed at the tail of a special ``helper queue'' (also
+  implemented as doubly linked list).  The helper queue will always contain a
+  subset of those elements in the real queue in sorted order from small
+  elements at the front to large elements in the back.  In particular, when an
+  element \(x\) is inserted at the tail end of the helper queue, it checks to
+  see if it is smaller than the element right in front of it in the helper
+  queue.  If so, it removes the element in front of it in the helper queue and
+  again compares itself to its predecessor.  It repeatedly removes its
+  predecessors until it gets to a point that its predecessor is smaller than
+  it!  To dequeue, we simply remove that element from the head of the real
+  queue.  We also check to see if it is at the head of the helper queue, in
+  which case we remove it from that queue as well.  Finally, to determine which
+  element is the minimum, we simply look at the front of the helper queue!
+
+  \begin{subproblems}
+    \item Use the accounting method to prove that the total running time of
+      \emph{any} sequence of \(n\) operations is \(\AsymptoticO(n)\).
+    \item Show the same amortized bound of \(\AsymptoticO(n)\) for \(n\)
+      operations with the potential method.
+  \end{subproblems}
+
+  \begin{hint}
+    Be careful to account for all of the work performed by this data structure.
+    Every constant amount of work, including comparisons, should be able to
+    identify a ruble that will be used to pay for that work.
+  \end{hint}
+
+\end{problem}
+
+\begin{solution}
+
+  \begin{subproblems}
+    
+    \item
+
+    \item 
+
+  \end{subproblems}
+
+  \paragraph{Self-assessment} Self assessment goes here.
+\end{solution}
+
+
+\begin{problem}[\Py{PrimDijkstra}, 65]
+
+  In this problem, you'll implement Prim's MST algorithm and Dijkstra's
+  shortest path algorithm in one function called \Py{PrimDijkstra}. Please
+  implement this code using \textbf{Python 3}. (Python 2 implementations may
+  not pass our testing script.) Begin by downloading \Ident{Heap.py} and
+  \Ident{PrimDijkstra.py}, included in the problem instructions online.
+
+  \begin{description}
+
+    \item[\Ident{Heap.py}] \Ident{Heap.py} is the starter code for the
+      \Py{Heap} class.
+
+      \begin{itemize}
+
+        \item Note that the heap stores \Ident{Item} objects. An \Ident{Item}
+          comprises a \textbf{value}, a \textbf{vertex} number, and a
+          \textbf{predecessor}:
+
+          \begin{itemize}
+
+            \item The \textbf{value} is the number associated with a vertex.
+              For example, in Dijkstra's Algorithm, it's the current distance
+              to that vertex. Recall that the start vertex initially has a
+              value of \(0\) and all other vertices have values of infinity.
+
+            \item The \textbf{vertex} is just the name of the vertex. The
+              vertex number is the name of that vertex.  \emph{We use a
+                convention in which the \(n\) vertices are numbered \(0\)
+              through \(n-1\)}.
+
+            \item Finally, the \textbf{predecessor} is the ``breadcrumb'' that
+              ultimately lets us reconstruct a shortest path from this vertex
+              back to the starting vertex. Specifically, if vertex \(42\) got
+              its best offer from vertex \(57\), then vertex \(42\)'s
+              predecessor would be \(57\). In other words, when a vertex \(v\)
+              makes a relaxation offer (aka decreaseKey) to vertex \(w\) and
+              vertex \(w\) accepts that offer, vertex \(w\) records vertex
+              \(v\) as its predecessor.
+
+          \end{itemize}
+
+        \item The Heap comprises two lists, one called \Py{self.array} and the
+          other called \Py{self.index}.
+
+          \begin{itemize}
+
+            \item The list \Py{self.array} is the array implementation of the
+              heap. It contains \Py{Items}. The \Py{Item} with the smallest
+              value is at the top of the heap, and thus at index 1 in
+              \Py{self.array}.  \emph{It's important that we don't use index
+              0!} The reason is that the array implementation of the heap tree
+              only works if the root is at index 1. This allows us to use the
+              rule that the left and right children of the node at index \(i\)
+              are at indices \(2i\) and \(2i+1\), respectively, in the array
+              implementation of the heap. Similarly, the parent of the node at
+              index \(i\) in the heap is at index \(i/2\) rounded down. This
+              doesn't work if we used index \(0\) as the first element in the
+              heap.
+
+            \item The list \Py{self.index} allows us to find where a given
+              vertex is stored in the heap represented by \Py{self.array}. For
+              example, if vertex \(4\) is currently stored at index \(17\) in
+              \Py{self.array}, then \Py{self.index[4]} would be \(17\). Refer
+              to the lecture notes and video on Dijkstra's Algorithm to remind
+              yourself of how this array works.
+
+          \end{itemize}
+
+        \item \emph{Test your Heap!} We recommend writing some of your own very
+          small tests to test each method that you write. Test that method
+          before writing the code for the next method. Designing your own small
+          tests is a very important skill as a software developer. At the end,
+          you should also use our provided \Ident{Heaptest.py} code. Run it by
+          typing \mintinline{bash}{python Heaptest.py} in the shell.
+
+      \end{itemize}
+
+    \item[\Ident{PrimDijkstra.py}] \Ident{PrimDijkstra.py} is the main program
+      and it uses the Heap. The functions in this file are described in detail
+      below.
+
+      \begin{description}
+        \item[\Ident{PrimDijkstra(graph, start, alg)}] The main function in
+          \Ident{PrimDijkstra.py} is called
+          \[
+            \Py{PrimDijkstra(graph, start, alg)}.
+          \]
+          It takes an adjacency list, a start vertex, and an algorithm (either
+          ``P'' for Prim or ``D'' for Dijkstra) and returns an adjacency list
+          of either the minimum spanning tree or shortest path tree,
+          respectively.
+
+          An example of an input adjacency list is given below (and is also
+          given in the \Ident{PrimDijkstra.py} file). The adjacency list is a
+          list of lists, where the item at index i is a list of ordered pairs
+          of the form (neighbor, weight) where neighbor is the neighbor vertex
+          and weight is the weight of the edge from vertex i to vertex
+          neighbor. Recall that \emph{in our convention, the first vertex is
+          vertex \(0\).}  (Don't confuse this with the heap, where the first
+          index in the array is \(1\).  Those are two entirely different
+          things.  Vertices are elements of the graph.  The heap array is just
+          a representation of the binary tree heap and it starts storing items
+          at index \(1\).)
+
+          \inputminted{python}{template/02-graph1.py}
+
+          \tikzset{
+            vert/.style={
+              circle,
+              minimum size=3pt,
+              draw,
+              inner sep=1pt,
+              font=\small,
+            },
+            ex/.pic={
+              \begin{scope}[x=4em, y=4em]
+
+                \draw
+                (0,0) node[vert](6){\(6\)}
+                ++(1,0) node[vert](5){\(5\)}
+                ++(30:1) node[vert](4){\(4\)}
+                ++(-30:-1) node[vert](3){\(3\)}
+                ++(-1,0) node[vert](2){\(2\)}
+                ++(30:-1) node[vert](1){\(1\)}
+                ($ (1)+(0,1) $) node[vert](0){\(0\)}
+
+                (6) -- node[midway, below]{\(80\)} (5)
+                -- node[midway, below, sloped]{\(60\)} (4)
+                -- node[midway, above, sloped]{\(90\)} (3)
+                -- node[midway, above]{\(70\)} (2)
+                -- node[midway, above, sloped]{\(20\)} (1)
+                -- node[midway, below, sloped]{\(49\)} (6)
+                -- node[midway, left]{\(30\)} (2)
+                -- node[midway, above, sloped]{\(10\)} (5)
+                -- node[midway, right]{\(40\)} (3)
+
+                (1)
+                -- node[midway, left]{\(10\)} (0)
+                -- node[midway, above, sloped]{\(100\)} (2);
+
+              \end{scope}
+            },
+          }
+
+          Figure~\ref{figure:graph} shows this graph in pictorial form.
+
+          \begin{aside}
+            \begin{center}
+              \tikz{\pic{ex}}
+              \captionof{figure}{Example graph.}
+              \label{figure:graph}
+            \end{center}
+          \end{aside}
+
+          In Figure~\ref{figure:results} (left) is the minimum spanning tree in
+          this graph found using Prim's Algorithm starting at vertex~\(0\).  On the
+          right is the shortest path tree found using Dijkstra's Algorithm
+          starting at vertex~\(0\).
+
+          \begin{aside}
+            \begin{center}
+              \begin{tikzpicture}
+                \pic{ex};
+                \draw[ultra thick] (0)--(1)--(2)--(5)--(3) (5)--(4) (2)--(6);
+              \end{tikzpicture}
+              \qquad
+              \begin{tikzpicture}
+                \pic{ex};
+                \draw[ultra thick] (0)--(1)--(2)--(5)--(3) (5)--(4) (1)--(6);
+              \end{tikzpicture}
+
+              \captionof{figure}{Results of running Prim's (left) vs.
+              Dijkstra's (right) algorithm on the graph.}
+              \label{figure:results}
+            \end{center}
+          \end{aside}
+
+          Here's what happens when we run \Py{PrimDijkstra} on this graph…
+
+          \inputminted{python}{template/02-pd1-p.py}
+
+          In this case, we run Prim's Algorithm (that's the ``P'') in the third
+          argument and we get the MST shown on the left side of the figure. The
+          output is an adjacency list of the MST rooted at vertex \(0\) and
+          \emph{directed towards the leaves}.  Although the graph is not
+          actually directed, we treat this adjacency list as being directional
+          because vertex \(0\) invited vertex \(1\) in the MST. That is, Prim
+          added an edge from vertex \(0\) ``towards'' vertex \(1\).  Vertex 1
+          invited vertex \(2\), but it did not invite vertex \(0\).
+
+          So, vertex \(0\) has one edge towards vertex \(1\). Vertex \(1\) has
+          one edge towards vertex \(2\). Vertex \(2\) has two edges towards
+          vertex \(5\) and towards vertex \(6\). Vertex \(3\) has no edges
+          towards any other vertex. Vertex \(4\) has no edges towards any other
+          vertex. Vertex \(5\) has edges towards vertices \(3\) and \(4\) and
+          vertex \(6\) has no edge towards any other vertex.
+
+          In the second case, we see the shortest path tree found by running
+          Dijkstra's algorithm from vertex \(0\) as follows, where the ``D'' in
+          the third argument stands for Dijkstra.
+
+          \inputminted{python}{template/02-pd1-d.py}
+        
+          Again, vertex \(0\) invited vertex \(1\). Vertex \(1\) invited
+          vertices \(2\) and \(6\), etc.
+
+          \begin{note}
+            Your \Py{PrimDijkstra} function will be around 25 lines long. As
+            discussed in class, the only distinction between Prim and Dijkstra
+            should be something like this (you can use this code verbatim if
+            you wish).  The important thing here is that you should not have
+            separate logic for Prim and Dijkstra beyond one such conditional
+            statement that dictates how an offer is made to a neighboring
+            vertex.
+
+            \inputminted{python}{template/02-pd-difference.py}
+          \end{note}
+
+        \item[\Py{navigate(graph, start, end)}] Finally, your
+          \Ident{PrimDijkstra.py} file should have a function called
+          \[
+            \Py{navigate(graph, start, end)}
+          \]
+          that gives a shortest path from the start vertex to the end vertex in
+          the given graph. Here are a few examples of this function in action:
+
+          \inputminted{python}{template/02-navigate.py}
+
+          The \Py{navigate} function will first call \Py{PrimDijkstra} to
+          compute a shortest path tree from the start vertex to all reachable
+          vertices in the graph.  It will then search that tree for a path from
+          the start vertex to the desired end vertex.  You may wish to
+          introduce one or more helper functions to help with that, but the
+          \emph{total} amount of code in navigate and its helper function(s)
+          shouldn't be more than around 10--15 lines total.  Moreover,
+          \Py{navigate} doesn't need to be as fast as possible, as long as it's
+          not asymptotically slower than the \Py{PrimDijkstra} function itself!
+          In other words, since \Py{PrimDijkstra} runs in time $\AsymptoticO(m
+          \log n)$, navigate may be implemented any way that you like as long
+          as it doesn't exceed $\AsymptoticO(m \log n)$. (The reason for this
+          requirement is to make sure that \Ident{PrimDijkstra}'s running time
+          is the ``dominant'' term in the running time.)
+
+      \end{description}
+  \end{description}
+
+  Please submit all of your code and your PDF in a single upload. It should
+  contain \Ident{Heap.py}, \Ident{PrimDijkstra.py}, and \emph{your PDF solution
+  for Problem 1 (Minqueues)}.
+
+\end{problem}
+
+\begin{solution}
+
+  \paragraph{Self-assessment}
+\end{solution}
+
+\end{document}
