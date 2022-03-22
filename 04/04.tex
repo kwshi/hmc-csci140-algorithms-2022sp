@@ -1,0 +1,123 @@
+\documentclass{ks-pset}
+
+\usepackage{ks-cs}
+
+\title{Homework 4: Divide and Conquer}
+\author{}
+\date{2022 February 23 (Wednesday)}
+
+\begin{document}
+
+\begin{problem}[Stoogesort!, 50]
+
+  Professors Curly, Mo, and Larry of the Pasadena Institute of Technology have
+  proposed the following algorithm to sort an array of \(n\) items in
+  increasing order. First, recursively sort the first two-thirds of the
+  elements in the array in increasing order. Next, sort the last two thirds of
+  the array. Finally, sort the first two thirds again.  (Notice that this
+  algorithm is similar to Mergesort except that it uses three recursive calls
+  rather than two and there is no merging step!  As a consequence, this
+  algorithm is very easy to implement!)
+
+  \begin{subproblems}
+    \item Give an informal but convincing explanation (not a rigorous proof by
+      induction) of why the approach of sorting the first two-thirds of the
+      array, then sorting the last two-thirds of the array, and then sorting
+      again the first two-thirds of the array yields a sorted array.  A few
+      well-chosen sentences should suffice here.
+    \item Find a recurrence relation for the running time of Stoogesort.  To
+      simplify your recurrence relation, you may assume  each of the recursive
+      calls is on a portion of the array that is \emph{exactly} two-thirds the
+      length of the original array.
+    \item Next, solve the recurrence relation using the work tree method.
+      \textbf{Show all of your work.}   In your analysis, it will be convenient
+      to choose \(n\) to be \(cᵏ\) for some fixed constant \(c\). (For example,
+      we used \(c=2\) when analyzing Mergesort.  Here you will want to use a
+      different value of \(c\).)  The value of \(c\) that you choose might not
+      even be an integer!   (Please make sure that you've read Handout 3.) To
+      make the worktree analysis easier for you, we have provided a \LaTeX{}
+      tabular environment for you below.  You can replace the \(x\)'s to fill
+      in the table.  Afterwards, you'll need to compute the total work by
+      adding up the values in the total work at each row in the table.
+      \[
+        \begin{array}{r|r|r|r}
+          \text{Nodes} & \text{Problem Size} & \text{Work per Node} & \text{Total Work} \\ \midrule
+          x & x & x & x \\
+          x & x & x & x \\
+          ⋮ & ⋮ & ⋮ & ⋮ \\
+          x & x & x & x
+        \end{array}
+      \]
+    \item How does the asymptotic running time of Stoogesort compare with the
+      asymptotic running time of Mergesort?
+  \end{subproblems}
+
+\end{problem}
+
+\begin{solution}
+
+\end{solution}
+
+\begin{problem}[Robot Testing!, 50]
+
+  This problem uses divide-and-conquer to test robots. The famous roboticist,
+  Professor Dodd S. Zachovichsky, has \(n\) supposedly identical robots
+  that---in principle---are capable of testing each other. The professor's test
+  jig accommodates two robots at a time. When the jig is loaded, each robot
+  tests the other and reports whether it is good or bad. A good robot always
+  reports accurately whether the other robot is good or bad, but the answer of
+  a bad robot cannot be trusted.  Thus, the four possible outcomes of a test
+  are as follows:
+
+  \begin{center}
+    \begin{tabular}{lll}
+      Robot \(A\) says & Robot \(B\) says & Conclusion \\ \midrule
+      \(B\) is good & \(A\) is good & Both good, or both bad \\
+      \(B\) is good & \(A\) is bad & At least one is bad \\
+      \(B\) is bad & \(A\) is good & At least one is bad \\
+      \(B\) is bad & \(A\) is bad & At least one is bad \\
+    \end{tabular}
+  \end{center}
+
+  Assume that we are guaranteed that \emph{more} than half of the \(n\) robots
+  are good.  Our ultimate goal is to identify all of the good robots.  To do
+  that, we'll use a divide-and-conquer process to find one good robot.  Then,
+  we'll use that one good robot to test each of the other \(n-1\) robots.
+
+  Here's how the divide-and-conquer step will work: We'll pair up the \(n\)
+  robots arbitrarily (arbitrarily because we don't yet know anything about
+  which robots are good and which are bad).  If \(n\) is odd, one robot won't
+  be paired.  Then, for each pair of robots, we'll see what they say about one
+  another.  Based on what they say, we'll somehow decide which robots to
+  advance to the next phase.  Our goal is to advance at most \(\Ceil{n/2}\)
+  robots to the second phase while maintaining the property that more than half
+  of the robots in that second phase are good.  Then we'll do the same thing
+  again. We'll pair up the robots that made it to the second phase (possibly
+  leaving one unpaired if the number of robots is odd), see what they say about
+  one another, and again somehow select at most half of those robots to go on
+  the third phase, maintaining the property that more than half of the robots
+  in that phase are good.  This is divide-and-conquer!  At the end of this
+  process, we'll get down to one robot that we know is good and we'll use that
+  robot to test all of the original \(n-1\) other robots.  Snazzy!
+
+  \begin{subproblems}
+    \item Given a set of \(n\) robots, more than half of which are good,
+      explain how \(n/2\) pairwise tests can be used to reduce that set to
+      \(\Ceil{n/2}\) or fewer robots where, still, more than half of those
+      robots are good.  (Start off by assuming that \(n\) is even.  Once you've
+      worked out that case, come back and work on the case that \(n\) is odd.)
+    \item Using the result of part (a) above, show that the good robots can be
+      identified with \(\AsymptoticO(n)\) pairwise tests, assuming that more
+      than \(n/2\) of the robots are good.  Explain clearly why your algorithm
+      identifies all of the good robots.  You'll need to set up a recurrence
+      relation that describes the number of tests and solve that recurrence
+      relation.
+  \end{subproblems}
+
+\end{problem}
+
+\begin{solution}
+
+\end{solution}
+
+\end{document}

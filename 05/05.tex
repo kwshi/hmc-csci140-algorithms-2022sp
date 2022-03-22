@@ -1,0 +1,101 @@
+\documentclass{ks-pset}
+
+\usepackage{ks-cs}
+
+\title{Homework 5: Divide \& Conquer II}
+\date{2022 March 2 (Wednesday)}
+\author{}
+
+\begin{document}
+
+\begin{problem}[Order Statistics with 7!, 40]
+
+  In class, we looked at the order statistics algorithm \Ident{Select} which
+  takes as input an unsorted array \(A\) of length \(n\) and a positive integer
+  \(i\) and returns the \(i\)-th smallest number in \(A\). Our first attempt
+  was based on grouping \(A\) into groups of size 3.  That resulted in an
+  algorithm whose running time was \(\AsymptoticO(n \log n)\).  But, using
+  groups of \(5\) gave us a \(\AsymptoticO(n)\) algorithm.  Show that when we
+  use groups of size \(7\), the algorithm still runs in time
+  \(\AsymptoticO(n)\).  To do this, you'll need to derive and explain the
+  recurrence relation for the algorithm and then explain carefully why it
+  solves to \(\AsymptoticO(n)\).
+
+\end{problem}
+
+\begin{solution}
+
+  \paragraph{Self-assessment}
+\end{solution}
+
+\begin{problem}[Pasadenium!, 60]
+
+  This is a divide-and-conquer problem!  Researchers at the Pasadena Institute
+  of Technology are experimenting with a super-strong new material called
+  Pasadenium.  To test its strength, blocks of Pasadenium will be dropped from
+  various floors of  a tall building with \(n\) floors.  A Pasadenium block is
+  said to have \emph{least breaking floor} (LBF) \(k\) if it will break when
+  dropped from floor \(k\) but will not break if dropped from any lower floor.
+  The LBF is defined to be \(n+1\) if it will not break from floor \(n\) (the
+  uppermost floor).
+
+  Your task is to determine the LBF of a block of Pasadenium.  Since it's a
+  very expensive material, you are given just two blocks.  Fortunately, any two
+  blocks of Pasadenium have the same LBF. Unfortunately, once one of your
+  blocks breaks, the resulting block (even if just cracked) is unusable for
+  future testing.
+
+  It is easy to see that if you only had one block, you would have to drop the
+  block \(\AsymptoticO(n)\) times in the worst case to determine the LBF
+  (successively drop the block from floor \(1\), floor \(2\), …, floor \(n\)).
+  If at any step you were to skip up more floors, then you would risk
+  prematurely breaking the block without knowing the exact floor on which it
+  would have broken.
+
+  In this problem we will determine how to best utilize two blocks to determine
+  the LBF using the least number of drops. Rather than expressing the solution
+  as ``Given a building with \(n\) floors, I can compute the LBF in at most
+  \(f(n)\) drops'' we will instead express the solution \emph{inversely} as
+  ``With \(d\) drops, I can compute the LBF of a building with as many as
+  \(g(d)\) floors.''  Here's your task:
+
+	\begin{subproblems}
+
+    \item \label{part:gd} Given two blocks of Pasadenium and no more than \(d\)
+      drops, for how tall a building can you guarantee finding the LBF?
+      Describe your algorithm in clear and concise English and give a closed
+      form function \(g(d)\) for the maximum height of the building (as a
+      function of \(d\)) that your algorithm can handle.
+
+    \item Use induction on \(d\) to prove that your algorithm uses at most
+      \(d\) block drops for a building with \(g(d)\) floors.
+
+    \item Dr. Devi is skeptical.  Write a short memo explaining why she should
+      believe that your algorithm is optimal; that is, why \emph{any algorithm}
+      that uses 2 blocks and at most \(d\) drops cannot guarantee determining
+      the LBF for a building taller than the \(g(d)\) that you gave in part
+      \ref{part:gd} of this problem.  A few sentences of intuitive explanation
+      suffice here.  (If you wish, you're welcome to prove this
+      rigorously---it's not too hard to turn the informal explanation into a
+      formal proof.)
+
+	\end{subproblems}
+
+\end{problem}
+
+\begin{solution}
+
+  \begin{subproblems}
+
+    \item
+
+    \item
+
+    \item
+
+  \end{subproblems}
+
+  \paragraph{Self-assessment}
+\end{solution}
+
+\end{document}
