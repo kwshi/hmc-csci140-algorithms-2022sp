@@ -1,0 +1,169 @@
+\documentclass{ks-pset}
+
+\usepackage{ks-cs}
+
+\title{Homework 7: Graphs and Flow!}
+\author{}
+\date{2022 April 13 (Wednesday)}
+
+\begin{document}
+
+\begin{problem}[SpaceY, 50]
+
+  SpaceY is a company that builds rockets and sends payloads into space for
+  other companies.  On a given mission, SpaceY will consider a set of
+  experiments that clients would like to conduct (e.g., ``Does zero-gravity
+  compromise the running time of algorithms?'').  In general, SpaceY will
+  receive more requests from clients than it can fulfill, so its goal is to
+  fulfill those requests that result in the most profit.
+
+  Let \(E=\Set{E₁,E₂,\dotsc,Eₘ}\) denote the set of experiments under
+  consideration.  Let \(pⱼ\) denote the amount of money the prospective client
+  will pay to conduct experiment \(Eⱼ\). Let \(I=\Set{I₁,I₂,\dotsc,Iₙ}\) denote
+  a set of instruments. For each experiment \(Eⱼ\), let \(Rⱼ\) be the subset of
+  \(I\) that contains all of the instruments needed to conduct experiment
+  \(Eⱼ\).  Notice that this allows a single instrument to be used in multiple
+  experiments. The instruments are potentially large and heavy and the cost of
+  taking instrument \(Iₖ\) is \(cₖ\) dollars.  Your job is to determine which
+  experiments should be performed in order to maximize the net revenue, which
+  is the total income from the performed experiments minus the total cost of
+  all instruments carried.  Amazingly, this problem can be solved using
+  \textbf{network flow}!
+
+  We'll construct a network flow problem as follows: The network contains a
+  source vertex, \(s\), vertices \(I₁,I₂,\dotsc,Iₙ\), vertices
+  \(E₁,E₂,\dotsc,Eₘ\), and a sink vertex \(t\). For each instrument \(Iₖ\)
+  there is a directed edge from \(s\) to vertex \(Iₖ\) with capacity \(cₖ\)
+  (the cost of taking this instrument).  For each experiment \(Eⱼ\) there is an
+  edge from vertex \(Eⱼ\) to \(t\) with capacity \(pⱼ\) (the payment for this
+  experiment). Finally, if instrument \(Iₖ\) is in set \(Rⱼ\) (meaning that
+  instrument \(Iₖ\) is needed for experiment \(Eⱼ\)) then there is a directed
+  edge from vertex \(Iₖ\) to vertex \(Eⱼ\) with \textbf{infinite} capacity.
+
+  \begin{subproblems}
+
+    \item First, try this.  Consider a situation in which there are three
+      experiments \(E₁, E₂, E₃\) which will bring in \(10\), \(6\), and \(6\)
+      dollars, respectively.  Also there are four instruments \(I₁\), \(I₂\),
+      \(I₃\), and \(I₄\) which cost \(3\), \(2\), \(5\), and \(7\) dollars,
+      respectively to take on the shuttle.  Experiment \(E₁\) requires
+      instruments \(I₁\) and \(I₂\), experiment \(E₂\) requires instruments
+      \(I₁\) and \(I₃\), and experiment \(E₃\) requires instruments \(I₃\) and
+      \(I₄\).  Using brute-force, enumerate all seven possible combinations of
+      experiments that could be taken and determine which combination is the
+      most profitable.  What is this combination and what is the net revenue?
+
+    \item For the example problem above, construct the corresponding network
+      flow problem.  Find the maximum flow in the network (show a picture of
+      the residual graphs at each step) and then find the corresponding cut
+      whose capacity is equal to this flow.  (Remember, this cut is found from
+      the last residual network when running the Ford-Fulkerson algorithm!)
+
+    \item Let's let \(S\) denote the vertices that are on the same side of the
+      above cut as vertex \(s\) and let \(T\) denote the vertices that are on
+      the same side of the cut as \(t\).  What do you notice about the
+      instruments and experiments that are in the set \(T\)?
+
+    \item Now, let \(τ\) be the sum of the payments that SpaceY would receive
+      for taking all of the possible experiments.  In this case,
+      \(τ=10+6+6=22\). From \(τ\), subtract the capacity of the cut you found
+      above.  Surprise!  What is this number and how does it appear to relate
+      to this problem?
+
+    \item Finally, we're ready to generalize all of this into an efficient
+      algorithm for solving the profit maximization problem in general.  Assume
+      that we've set up a network flow problem corresponding to a given set of
+      experiments and instruments. Show that for any cut with finite total
+      capacity, if an experiment \(Eⱼ\) is in \(T\) (the side of the cut
+      containing vertex \(t\)), then all of the instruments used in this
+      experiment must \textbf{also} be in \(T\).
+
+    \item Now argue that the maximum net revenue that can be achieved is simply
+      the total sum \(τ\) of the payments that would be received for taking all
+      of the experiments minus the capacity of the minimum cut.
+
+    \item Now just summarize all of this by describing the algorithm,
+      step-by-step, for finding the maximum net revenue, given a set of
+      experiments, instruments, and the corresponding payments and costs.  Give
+      a careful derivation of the worst-case running time of the algorithm
+      assuming there are \(m\) experiments and \(n\) instruments. The running
+      time may also depend on the instrument costs and experiment payment
+      values.
+
+  \end{subproblems}
+
+\end{problem}
+
+
+\begin{solution}
+
+  \paragraph{Self-assessment}
+\end{solution}
+
+
+\begin{problem}[Hurts' On-board Navigation System, 50]
+
+  This problem, brought to you by Hurts Car Rental, is a good example of how
+  \emph{using existing algorithms} can be the secret to all happiness!
+
+  Hurts Car Rental has designed a new generation of alternative fuel vehicles.
+  The new vehicles use a special fuel comprising a finely minced mixture of
+  algorithms slides, chocolate fudge Pop Tarts, Spam, late 90's hip-hop CDs,
+  and boba milk tea. Due to this rather unusual fuel requirement, there are
+  only certain cities in the country where the vehicles can be refueled. Thus,
+  to get from the start city to the destination city, the driver must plan a
+  route that ensures that the car can be refueled along the way.
+
+  The on-board computer on such a vehicle contains a weighted directed graph in
+  which the \(n\) vertices represent cities, the \(m\) directed edges represent
+  one-way roads, and the weights on the edges represent the (positive integer)
+  lengths of the roads. The graph, of course, can have cycles! However,
+  \textbf{you should assume that there is some constant \(C\) such that every
+    vertex has in-degree and out-degree (number of entering edges and number of
+  exiting edges, respectively) at most \(C\).}
+
+  The computer knows which select cities have filling stations. To use the
+  navigation system, the user will enter the starting city, the destination
+  city, and the range of the vehicle on a full tank. (You may assume that the
+  starting city and the destination cities, being Hurts rental cities, both
+  have filling stations - and that the car starts with a full tank of fuel.)
+  The computer will respond with the \emph{shortest} route from the starting
+  city to the destination city that ensures that the vehicle doesn't run out of
+  fuel, or will determine that no such route exists.
+
+  \begin{subproblems}
+
+    \item Give an algorithm for solving this problem that uses existing graph
+      algorithms.  Be sure not to change existing algorithms---use them
+      ``off-the-shelf'' so that you can leverage their known proofs of
+      correctness and running times.  Choose the existing algorithms that allow
+      you to solve this problem with the best running time and derive the
+      running time of your solution.
+
+      \begin{note}
+        You have several shortest path algorithms at your disposal: Dijkstra,
+        Bellman--Ford, Floyd--Warshall, and Johnson's Algorithm. Some will be
+        faster than others for this problem, so you'll want to choose carefully
+        for full credit.
+      \end{note}
+
+    \item Prove that your algorithm finds an optimal solution.
+
+      \begin{note}
+        Part of the benefit of using existing algorithms in your solution is
+        that you can use their correctness to help prove the correctness of the
+        full algorithm faster. However, for this to work, you must not tamper
+        with the original algorithms, or you would have to re-prove their
+        correctness!
+      \end{note}
+
+  \end{subproblems}
+
+\end{problem}
+
+\begin{solution}
+
+  \paragraph{Self-assessment}
+\end{solution}
+
+\end{document}
